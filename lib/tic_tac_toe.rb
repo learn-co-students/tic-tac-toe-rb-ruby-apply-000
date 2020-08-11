@@ -21,8 +21,7 @@ end
 
 #Converting what the user inputs into an in index for the board
 def input_to_index(user_input)
-  index = user_input.to_i
-  index -= 1
+  user_input.to_i - 1
 end
 
 #Placing the move the user inputs on the board
@@ -32,7 +31,7 @@ end
 
 #Checking if the move someone made is in a spot already filled
 def position_taken?(board, index)
-  !(board[index].nil? || board[index] == " ")
+  board[index] == 'X' || board[index] == 'O'
 end
 
 #Checking to see if the move the user made is possible
@@ -42,12 +41,11 @@ end
 
 #Asking a user for the number and checking to see if the move is valid, and if not, asking again
 def turn(board)
-  puts "Please choose a number 1-9:"
-  user_input = gets.chomp
+  puts 'Please enter 1-9:'
+  user_input = gets.strip
   index = input_to_index(user_input)
   if valid_move?(board, index)
-    the_player = current_player(board)
-    move(board, index, the_player)
+    move(board, index, current_player(board))
     display_board(board)
   else
     turn(board)
@@ -56,44 +54,21 @@ end
 
 #Counting how many moves have been made
 def turn_count(board)
-  moves = 0
-  board.each { |turn|
-    if turn == "X" || turn == "O"
-      moves +=1
-    end
-  }
-  return moves
+  board.count { |token| token == 'X' || token == 'O' }
 end
 
 #Checking who's turn it is, if its odd than it's X's turn
 def current_player(board)
-  turn_counter = turn_count(board)
-  if turn_count(board) % 2 == 0
-    player = 'X'
-  else
-    player = 'O'
-  end
-  return player
+  turn_count(board).even? ? 'X' : 'O'
 end
 
 #Checking to see who won
 def won?(board)
-  WIN_COMBINATIONS.each {|winning_combo|
-    index0 = winning_combo[0]
-    index1 = winning_combo[1]
-    index2 = winning_combo[2]
-
-    position_1 = board[index0]
-    position_2 = board[index1]
-    position_3 = board[index2]
-
-    if position_1 == "X" && position_2 == "X" && position_3 == "X"
-      return winning_combo
-    elsif position_1 == "O" && position_2 == "O" && position_3 == "O"
-      return winning_combo
-    end
-  }
-  return false
+  WIN_COMBINATIONS.detect do |combo|
+    board[combo[0]] == board[combo[1]] &&
+      board[combo[1]] == board[combo[2]] &&
+      position_taken?(board, combo[0])
+  end
 end
 
 #Checking to see if every space on the board is taken
@@ -103,35 +78,19 @@ end
 
  #Checking to see if there's a draw
  def draw?(board)
-  if !won?(board) && full?(board)
-    return true
-  else
-    return false
-  end
-end
+   !won?(board) && full?(board)
+ end
 
  #Checking to see if the game is over
  def over?(board)
-  if won?(board) || draw?(board)
-    return true
-  else
-    return false
-  end
+  won?(board) || draw?(board)
 end
 
 #Showing the "X" or "O" that has won the game
- def winner(board)
-  index = []
-  index = won?(board)
-  if index == false
-    return nil
-  else
-    if board[index[0]] == "X"
-      return "X"
-    else
-      return "O"
-    end
-  end
+def winner(board)
+ if winning_combo = won?(board)
+   board[winning_combo.first]
+ end
 end
 
 #Connecting methods to create game loop
