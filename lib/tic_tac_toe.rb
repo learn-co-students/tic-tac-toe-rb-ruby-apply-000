@@ -58,20 +58,22 @@ if valid_move?(board, user_input)
       move(board,user_input,current_player(board))
       display_board(board)
 else
-  # turn(board)
-  #  !valid_move?(board, user_input)
-  #     puts "Please enter 1-9:"
-  #       user_input = gets.strip
+  turn(board)
 
 end
 end
 
   def play(board)
-  counter = 0
-   while counter < 9
-   turn(board)
-   turn(board) until over(board)
-    # counter = counter + 1
+  # counter = 0
+  #  while counter < 9
+  #  turn(board)
+   turn(board) until over?(board)
+   if won?(board)
+     puts "Congratulations #{winner(board)}!"
+   end
+     if draw?(board)
+     puts "Cat's Game!"
+     
   end
   end
 
@@ -98,20 +100,12 @@ end
   end
 
   def draw?(board)
-    if won?(board) && full?(board)
-    returns false
-      end
-    if full?(board) && !won?(board)
-  puts "Cat's game!"
-  returns true
+  full?(board) && !won?(board)
 end
-end
-
 
 
   def over?(board)
     won?(board) || draw?(board)
-    returns true
   end
 
   def won?(board)
