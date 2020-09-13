@@ -1,5 +1,3 @@
-#Learn --fail-fast
-
 WIN_COMBINATIONS = [
   [0,1,2], #1
   [3,4,5], #2
