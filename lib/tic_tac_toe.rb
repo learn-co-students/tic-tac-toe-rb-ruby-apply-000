@@ -118,10 +118,8 @@ end
 def draw?(board)
   if !won?(board) && full?(board)
     return true 
-  elsif !won?(board) && !full?(board) 
-    return false 
-  elsif won?(board)
-    return false 
+  else 
+    return false
   end
 end
 
@@ -147,18 +145,12 @@ end
 
 
 #PLAY 
-def play(board)
-   counter = 0
-   until counter == 9
-     turn(board)
-     counter += 1
-   end
-end
 
 def play(board)
-  until over?(board) 
-    turn(board) 
+  until over?(board)
+    turn(board)
   end
+ 
   if won?(board)
     winner(board) == "X" || winner(board) == "O"
     puts "Congratulations #{winner(board)}!"
