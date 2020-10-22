@@ -2,9 +2,12 @@
 
 require_relative '../lib/tic_tac_toe'
 
+# representing tic tac toe board with string of empty arrays
 board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
 
+# prints greeting and displays board using empty board array valurs
 puts "Welcome to Tic Tac Toe!"
 display_board(board)
 
+# invokes game play
 play(board)
